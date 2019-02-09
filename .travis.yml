@@ -8,3 +8,18 @@ before_install: # this section mentions a series of commands before our tests ar
 
 script: # this section contains the series of commands that needs to be required to run the tests
  - docker run sreejeshmohant/docker-react npm run test -- --coverage
+  
+deploy: # This section tells the travis CI the needed configurations and how to deplot the app to AWS
+  provider: elasticbeanstalk  # TRAVIS CI is pre-configured to use a number of providers like Digital Oceas and AWS is one of them
+  region: "us-east-2"  #AWS instance region  
+  app: "docker-react" #your project name in elasticbeanstalk
+  env: "DockerReact-env" #The enivironment name in elasticbeanstalk
+  bucket_name: "elasticbeanstalk-us-east-2-036828847231" # our code in github is pulled into an S3 bucket as zip file and elascticbeanstalk use the files from there for deployment. An S3 bucket is automatically created with elasticbeanstalk
+  bukcet_path: "docker-react" # the folder inside the S3 were the files are going to be build. Give it same as the app name
+  on:   #specifying that deployment should only happen when the code is in master branch and not in feature branch(Github)
+   branch: master
+  #below section mentions the api access and secret key we have configured in the TRAVIS CI. The access and secret key values can be got from AWS IAM managment
+  access_key_id: $AWS_ACCESS_KEY  
+  secret_access_key:
+    secure: "$AWS_SECRET_KEY"
+    
