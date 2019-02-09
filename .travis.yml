@@ -1,0 +1,10 @@
+sudo: required  # mentioning we need to have super user permissions
+
+services: 
+ - docker       # mentioning we need a copy of docker ready to go
+
+before_install: # this section mentions a series of commands before our tests are run
+ - docker build -t sreejeshmohant/docker-react-f Dockerfile.dev .
+
+script: # this section contains the series of commands that needs to be required to run the tests
+ - docker run sreejeshmohant/docker-react npm run test -- --coverage
